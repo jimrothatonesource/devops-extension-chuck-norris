@@ -6,16 +6,15 @@ An Azure DevOps extension that adds Chuck Norris quotes to your build reports, b
 
 ## What This Extension Does
 
-This extension provides two main features:
+This extension adds Chuck Norris quotes to your build results to keep your builds in shape!
 
-1. **Chuck Norris Build Task** - A marker task you can add to your pipeline that enables the build report enhancement
-2. **Build Report Enhancement** - Adds a "Chuck Norris Says" section to your build summary with motivational quotes
+### Features
 
-The extension shows different Chuck Norris images and quotes based on your build status:
-- ✅ **Success**: Chuck approves your build
-- ⚠️ **Warning**: Chuck warns you about potential issues  
-- ❌ **Failed**: Chuck is disappointed but still motivating
-- ⏳ **Running**: Chuck is waiting patiently
+1. **Random Chuck Norris Quotes** - Each build displays a randomly selected Chuck Norris quote from a collection of 41 programmer-themed quotes
+2. **Build Summary Section** - Adds a special "Chuck Norris Says" section to your build summary tab in the Extensions section
+3. **Chuck Norris Image** - Displays Chuck Norris himself approving your build
+
+Simply add the task to your pipeline and enjoy random Chuck Norris wisdom with every build!
 
 ## Installation
 
@@ -33,8 +32,9 @@ The extension shows different Chuck Norris images and quotes based on your build
 5. Install the extension
 
 ### Using the Extension
-1. Add the "Chuck Norris Quotes" task to your pipeline
-2. Enjoy the motivational quotes in your build reports!
+1. Add the "Chuck Norris Quotes" task to your pipeline (see Usage section below)
+2. Run your build
+3. Check the build results → Extensions tab to see your random Chuck Norris quote!
 
 ## Building the Extension
 
@@ -118,19 +118,22 @@ tfx extension install --publisher jimrothatonesource --extension-id chucknorris-
 ### Project Structure
 
 ```
-├── ChuckNorrisTask/           # Azure DevOps build task
-│   ├── task.json             # Task definition
-│   ├── ChuckNorrisTask.ps1   # PowerShell script
-│   ├── icon.png              # Task icon
-│   └── chuck.png             # Chuck Norris image
-├── src/enhancer/             # TypeScript source code
-│   └── buildResults.ts       # Build report enhancement logic
-├── static/                   # Static web assets
-│   ├── css/app.css           # Styling
-│   ├── images/               # Status images
-│   └── StatusSection.html    # Build report section template
-├── docs/                     # Documentation
-└── dist/                     # Compiled output
+├── ChuckNorrisTask/              # Azure DevOps build task
+│   ├── task.json                # Task definition
+│   ├── ChuckNorrisTask.js       # Main task implementation (Node.js)
+│   ├── ChuckNorrisTask.ps1      # PowerShell script (legacy)
+│   ├── ChuckApproves.jpg        # Chuck Norris image for build summary
+│   ├── icon.png                 # Task icon
+│   └── chuck.png                # Additional Chuck Norris images
+├── src/enhancer/                # TypeScript source code
+│   └── buildResults.ts         # Build report enhancement logic (legacy HTML section)
+├── static/                      # Static web assets
+│   ├── css/app.css              # Styling
+│   ├── images/                  # Status images
+│   └── StatusSection.html      # Build report section template (legacy)
+├── docs/                        # Documentation
+├── azure-pipelines.yml         # CI/CD pipeline definition
+└── dist/                        # Compiled output
 ```
 
 ### Configuration
@@ -151,19 +154,32 @@ Add the "Chuck Norris Quotes" task to your Azure DevOps pipeline:
   displayName: 'Chuck Norris Quotes'
 ```
 
-The task acts as a marker that enables the build report enhancement. It doesn't perform any actual work - it just tells the extension to show Chuck Norris quotes in the build summary.
+### What It Does
+
+The task:
+- Displays a random Chuck Norris quote in the build log
+- Uploads a markdown summary to the build results Extensions tab
+- Shows Chuck Norris approving your build with a random quote
+- Uses the `##vso[task.uploadsummary]` logging command to add content to the build summary
+
+The quote is randomly selected from 41 different programmer-themed Chuck Norris jokes every time the task runs!
 
 ## Troubleshooting
 
-**Extension not showing in build reports?**
+**Chuck Norris summary not showing in build results?**
 - Make sure you've added the Chuck Norris Quotes task to your pipeline
+- Check that the task completed successfully
+- Look for the summary in the **Extensions** tab, not the Summary tab
 - Verify the extension is installed in your Azure DevOps organization
-- Check that the build completed successfully
 
 **Build task not found?**
 - Ensure the extension is properly installed
 - Try refreshing your browser cache
-- Verify you're using the correct task name: `ChuckNorrisTask`
+- Verify you're using the correct task name: `ChuckNorrisTask@1`
+
+**Seeing the same quote every time?**
+- Each build should show a different random quote from the collection of 41 quotes
+- If you're seeing the same quote, try clearing the build cache or running a new build
 
 ## Development
 
