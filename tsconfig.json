@@ -2,12 +2,15 @@
     "compilerOptions": {
         "module": "amd",
         "moduleResolution": "node",
-        "target": "es6",
+        "target": "ES2015",
         "outDir": "dist/",
-        "types": [
-            "vss-web-extension-sdk",
-            "jquery"
-        ]
+        "lib": ["ES2015", "DOM"],
+        "types": ["jquery"],
+        "strict": false,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowSyntheticDefaultImports": true
     },
     "files": [
         "src/enhancer/buildResults.ts"

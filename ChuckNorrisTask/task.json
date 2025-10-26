@@ -1,0 +1,28 @@
+﻿{
+  "id": "6785970c-2d58-4260-b047-0a54028ee9c1",
+  "name": "ChuckNorrisTask",
+  "friendlyName": "Chuck Norris Quotes",
+  "description": "Marker task to show Chuck Norris quotes in the build summary report.",
+  "category": "Utility",
+  "visibility": [
+    "Build"
+  ],
+  "author": "OneSource Virtual",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 14
+  },
+  "demands": [],
+  "minimumAgentVersion": "2.144.0",
+  "groups": [],
+  "inputs": [],
+  "icon": "icon.png",
+  "helpMarkDown": "Marker task to show Chuck Norris quotes in the build summary report.",
+  "instanceNameFormat": "Chuck Norris Quotes",
+  "execution": {
+    "Node20_1": {
+      "target": "ChuckNorrisTask.js"
+    }
+  }
+}

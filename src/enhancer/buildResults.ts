@@ -1,15 +1,13 @@
-﻿import Controls = require("VSS/Controls");
-import VSS_Service = require("VSS/Service");
-import TFS_Build_Contracts = require("TFS/Build/Contracts");
-import TFS_Build_Extension_Contracts = require("TFS/Build/ExtensionContracts");
-import TFS_Build = require("TFS/Build/RestClient");
-import DT_Client = require("TFS/DistributedTask/TaskRestClient");
-import VSS_Context = require("VSS/Context");
+﻿import * as SDK from "azure-devops-extension-sdk";
+import { Build, BuildResult, BuildStatus } from "azure-devops-extension-api/Build";
+import $ from "jquery";
 
-export class BuildResultsSection extends Controls.BaseControl {
+export class BuildResultsSection {
+
+    private _element: JQuery;
 
     constructor() {
-        super();
+        this._element = $(".build-status");
     }
 
     private quotes: string[] = [
@@ -55,57 +53,62 @@ export class BuildResultsSection extends Controls.BaseControl {
         "Chuck Norris can spawn threads that complete before they are started."
     ];
 
-    private _quote: string;
+    public async initialize(): Promise<void> {
+        try {
+            await SDK.init();
+            await SDK.ready();
 
-    public initialize(): void {
-        super.initialize();
+            const config = SDK.getConfiguration();
+            const extensionContext = SDK.getExtensionContext();
+            
+            console.log("--- Extension version: " + extensionContext.version);
+            console.log(`--- Publisher.Extension: ${extensionContext.publisherId}.${extensionContext.id}`);
 
-        var vstsVersion = VSS_Context.getPageContext().diagnostics.webPlatformVersion
-        var extensionVersion = VSS.getExtensionContext().version;
-        var publisherId = VSS.getExtensionContext().publisherId;
-        var extensionId = VSS.getExtensionContext().extensionId
-        console.log("--- VSTS version: " + vstsVersion);
-        console.log("--- Extension version: " + extensionVersion);
-        console.log(`--- Publisher.Extension: ${publisherId}.${extensionId}`)
+            // Set initial random quote and image
+            this._element.find("#quote").text(this.getRandomQuote());
+            this._element.find("#status-img").attr("src", "images/chuck-ok.png");
 
-        var n = Math.floor(Math.random() * this.quotes.length);
-        this._quote = this.quotes[n];
-        this._element.find("#quote").text(this._quote);
+            if (config && config.onBuildChanged) {
+                config.onBuildChanged((build: Build) => {
+                    this._updateBuildStatus(build);
+                });
+            }
 
-        var sharedConfig: TFS_Build_Extension_Contracts.IBuildResultsViewExtensionConfig = VSS.getConfiguration();
-        if (sharedConfig) {
-            sharedConfig.onBuildChanged((build: TFS_Build_Contracts.Build) => {
-                this._updateBuildStatus(build);
-            });
+            SDK.notifyLoadSucceeded();
+        } catch (error) {
+            console.error("Error initializing Chuck Norris extension:", error);
+            SDK.notifyLoadFailed(error);
         }
     }
 
-    private _updateBuildStatus(build: TFS_Build_Contracts.Build) {
-
-        var sharedConfig: TFS_Build_Extension_Contracts.IBuildResultsViewExtensionConfig = VSS.getConfiguration();
-
-        var imgSource = "images/chuck-wait.png";
-        if (build.status === TFS_Build_Contracts.BuildStatus.InProgress) {
+    private _updateBuildStatus(build: Build) {
+        let imgSource = "images/chuck-wait.png";
+        
+        if (build.status === BuildStatus.InProgress) {
             imgSource = "images/chuck-wait.png";
             this._element.find("#quote").text("Working on it...");
         }
-        else if (build.status === TFS_Build_Contracts.BuildStatus.Completed) {
-            if (build.result === TFS_Build_Contracts.BuildResult.Succeeded) {
+        else if (build.status === BuildStatus.Completed) {
+            if (build.result === BuildResult.Succeeded) {
                 imgSource = "images/chuck-ok.png";
             }
-            else if (build.result === TFS_Build_Contracts.BuildResult.PartiallySucceeded) {
+            else if (build.result === BuildResult.PartiallySucceeded) {
                 imgSource = "images/chuck-warning.png";
             }
-            else if (build.result === TFS_Build_Contracts.BuildResult.Failed) {
+            else if (build.result === BuildResult.Failed) {
                 imgSource = "images/chuck-error.png";
             }
-            this._element.find("#quote").text(this._quote);
+            this._element.find("#quote").text(this.getRandomQuote());
         }
         this._element.find("#status-img").attr("src", imgSource);
     }
+
+    private getRandomQuote(): string {
+        const n = Math.floor(Math.random() * this.quotes.length);
+        return this.quotes[n];
+    }
 }
 
-BuildResultsSection.enhance(BuildResultsSection, $(".build-status"), {});
-
-// Notify the parent frame that the host has been loaded
-VSS.notifyLoadSucceeded();
+// Initialize the extension
+const buildResultsSection = new BuildResultsSection();
+buildResultsSection.initialize();

@@ -4,8 +4,8 @@
 
 Or if you prefer to use a yaml build script just add the following task:
 
-```json
-task: solidify-labs.chucknorris-build-enhancer.chuck-norris-task.ChuckNorrisTask@0
+```yaml
+- task: jimrothatonesource.chucknorris-build-enhancer.ChuckNorrisTask@1
   displayName: 'Chuck Norris Quotes'
 ```
 
@@ -17,7 +17,7 @@ The build report will now display a section with a Chuck Norris quote:
 
 ### Team ###
 
-We thank the following contributor(s): **Mathias Olausson**.
+We thank the following contributors: **Mathias Olausson** (original), **OneSource Virtual** (current maintainer).
 
 ### Credits ###
 

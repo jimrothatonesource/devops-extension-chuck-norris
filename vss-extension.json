@@ -1,24 +1,20 @@
 {
   "manifestVersion": 1,
   "id": "chucknorris-build-enhancer",
-  "version": "0.1.36",
+  "version": "1.0.15",
   "name": "Chuck Norris Build Enhancer",
   "scopes": [
     "vso.build"
   ],
   "description": "Add this extension to your build definition and get a Chuck Norris quote to help you keep your builds in shape!",
-  "publisher": "mathias",
+  "publisher": "jimrothatonesource",
   "public": false,
   "icons": {
     "default": "static/images/logo.png"
   },
   "targets": [
     {
-      "id": "Microsoft.VisualStudio.Services.Cloud"
-    },
-    {
-      "id": "Microsoft.TeamFoundation.Server",
-      "version": "[16.2,)"
+      "id": "Microsoft.VisualStudio.Services"
     }
   ],
   "tags": [
@@ -27,21 +23,21 @@
   ],
   "links": {
     "home": {
-      "uri": "https://github.com/solidify/devops-extension-chuck-norris"
+      "uri": "https://github.com/jimrothatonesource/devops-extension-chuck-norris"
     },
     "getstarted": {
-      "uri": "https://github.com/solidify/devops-extension-chuck-norris"
+      "uri": "https://github.com/jimrothatonesource/devops-extension-chuck-norris"
     },
     "learn": {
-      "uri": "https://github.com/solidify/devops-extension-chuck-norris"
+      "uri": "https://github.com/jimrothatonesource/devops-extension-chuck-norris"
     },
     "support": {
-      "uri": "https://github.com/solidify/devops-extension-chuck-norris/issues"
+      "uri": "https://github.com/jimrothatonesource/devops-extension-chuck-norris/issues"
     }
   },
   "repository": {
     "type": "git",
-    "uri": "https://github.com/solidify/devops-extension-chuck-norris"
+    "uri": "https://github.com/jimrothatonesource/devops-extension-chuck-norris"
   },
   "branding": {
     "color": "rgb(0, 0, 0)",
@@ -49,7 +45,7 @@
   },
   "content": {
     "license": {
-      "path": "docs/LICENSE.md"
+      "path": "docs/license.md"
     },
     "details": {
       "path": "docs/overview.md"
@@ -62,9 +58,8 @@
       "packagePath": "enhancer"
     },
     {
-      "path": "src/task",
-      "addressable": true,
-      "packagePath": "ChuckNorrisTask"
+      "path": "ChuckNorrisTask",
+      "addressable": true
     },
     {
       "path": "docs",
@@ -77,13 +72,23 @@
       "packagePath": "/"
     },
     {
-      "path": "node_modules/vss-web-extension-sdk/lib",
+      "path": "node_modules/azure-devops-extension-sdk",
       "addressable": true,
-      "packagePath": "lib"
+      "packagePath": "lib/SDK"
+    },
+    {
+      "path": "node_modules/azure-devops-extension-api",
+      "addressable": true,
+      "packagePath": "lib/API"
+    },
+    {
+      "path": "node_modules/jquery/dist",
+      "addressable": true,
+      "packagePath": "lib/jquery"
     }
   ],
   "categories": [
-    "Build and release"
+    "Azure Pipelines"
   ],
   "contributions": [
     {
@@ -108,7 +113,7 @@
         "name": "Chuck Norris Says",
         "uri": "StatusSection.html",
         "order": 20,
-        "height": 120,
+        "height": 150,
         "supportsTasks": [
           "6785970c-2d58-4260-b047-0a54028ee9c1"
         ]
