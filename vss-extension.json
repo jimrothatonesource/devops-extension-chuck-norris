@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "chucknorris-build-enhancer",
-  "version": "1.0.15",
+    "version": "1.1.1",
   "name": "Chuck Norris Build Enhancer",
   "scopes": [
     "vso.build"
@@ -99,24 +99,6 @@
       "type": "ms.vss-distributed-task.task",
       "properties": {
         "name": "ChuckNorrisTask"
-      }
-    },
-    {
-      "id": "chuck-norris-build-status-section",
-      "type": "ms.vss-build-web.build-results-section",
-      "description": "Adds a section to the build Summary with Chuck Norris's comment about the build.",
-      "targets": [
-        ".build-info-tab",
-        "ms.vss-build-web.build-results-summary-tab"
-      ],
-      "properties": {
-        "name": "Chuck Norris Says",
-        "uri": "StatusSection.html",
-        "order": 20,
-        "height": 150,
-        "supportsTasks": [
-          "6785970c-2d58-4260-b047-0a54028ee9c1"
-        ]
       }
     }
   ]

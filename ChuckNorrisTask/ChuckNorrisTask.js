@@ -1,3 +1,6 @@
+var fs = require('fs');
+var path = require('path');
+
 var quotes = [
     "When Chuck Norris throws exceptions, it's across the room.",
     "All arrays Chuck Norris declares are of infinite size, because Chuck Norris knows no bounds.",
@@ -33,16 +36,46 @@ var quotes = [
     "Chuck Norris doesn't pair program.",
     "Chuck Norris can write multi-threaded applications with a single thread",
     "There is no Esc key on Chuck Norris' keyboard, because no one escapes Chuck Norris.",
-    "Visual SourceSafe actually works for Chuck Norris.",
+    "Visual Studio Code actually works for Chuck Norris.",
     "Chuck Norris can access the DB from the UI",
     "Chuck Norris' programs never exit, they terminate!",
     "Chuck Norris programs occupy 150% of CPU, even when they are not executing.",
     "Chuck Norris programs do not accept input.",
-    "Chuck Norris can spawn threads that complete before they are started."
+    "Chuck Norris can spawn threads that complete before they are started.",
+    "Claude calls Chuck Norris for advice."
 ];
 
 var randomIndex = Math.floor(Math.random() * quotes.length);
 var randomQuote = quotes[randomIndex];
 
+// Output to build log
 console.log("Chuck Norris says: " + randomQuote);
+
+// Use external Chuck Norris image URL (Azure DevOps doesn't support base64 images)
+var chuckImageUrl = "https://static.wikia.nocookie.net/fiveds/images/d/d7/Chuck_Norris.png";
+
+// Create Markdown content for build summary
+var markdownContent = "<div style='display: flex; align-items: center; gap: 20px;'>\n";
+markdownContent += "<div style='flex: 1;'>\n\n";
+markdownContent += "## *\"" + randomQuote + "\"*\n\n";
+markdownContent += "---\n\n";
+markdownContent += "✅ **Chuck Norris approved this build!**\n\n";
+        markdownContent += "</div>\n";
+        markdownContent += "<div style='flex-shrink: 0;'>\n\n";
+        markdownContent += "<img src='" + chuckImageUrl + "' alt='Chuck Norris' style='width: 150px; height: auto; border-radius: 8px;' />\n\n";
+        markdownContent += "</div>\n";
+markdownContent += "</div>";
+
+// Write to temp file
+var tempDir = process.env.AGENT_TEMPDIRECTORY || process.env.BUILD_STAGINGDIRECTORY || __dirname;
+var summaryFile = path.join(tempDir, "chuck-norris-says.md");
+
+try {
+    fs.writeFileSync(summaryFile, markdownContent, 'utf8');
+    console.log("##vso[task.uploadsummary]" + summaryFile);
+    console.log("Chuck Norris summary uploaded to build results");
+} catch (error) {
+    console.log("Warning: Could not create Chuck Norris summary file: " + error.message);
+}
+
 console.log("##[section]Chuck Norris Build Task completed successfully");
