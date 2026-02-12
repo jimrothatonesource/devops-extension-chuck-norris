@@ -50,7 +50,8 @@ export class BuildResultsSection {
         "Chuck Norris’ programs never exit, they terminate!",
         "Chuck Norris programs occupy 150% of CPU, even when they are not executing.",
         "Chuck Norris programs do not accept input.",
-        "Chuck Norris can spawn threads that complete before they are started."
+        "Chuck Norris can spawn threads that complete before they are started.",
+        "Git asks Chuck Norris for status."
     ];
 
     public async initialize(): Promise<void> {
